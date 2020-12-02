@@ -23,7 +23,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
-	private ProductDAO stockDAO;
+	private ProductDAO productDAO;
 
 	@Autowired
 	private AdminDAO adminDAO;
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public List<Product> getProducts() {
 		// TODO Auto-generated method stub
-		return stockDAO.getProducts();
+		return productDAO.getProducts();
 	}
 
 	@Override
@@ -55,24 +55,24 @@ public class ProductServiceImpl implements ProductService {
 		// get the category
 		Category category = categoryDAO.getCategory(model.getCategoryId());
 
-		// build up the stock
-		Product stock = new Product();
+		// build up the product
+		Product product = new Product();
 
-		stock.setAdmin(admin);
-		stock.setBrand(brand);
-		stock.setCategory(category);
-		stock.setCostPrice(model.getCostPrice());
-		stock.setCreationDate(model.getCreationDate());
-		stock.setDescription(model.getDescription());
-		stock.setEnabled(model.getEnabled());
-		stock.setFeatures(model.getFeatures());
-		stock.setLastOrder(model.getLastOrder());
-		stock.setOrders(model.getOrders());
-		stock.setRemainingQuantity(model.getRemainingQuantity());
-		stock.setSellingPrice(model.getSellingPrice());
+		product.setAdmin(admin);
+		product.setBrand(brand);
+		product.setCategory(category);
+		product.setCostPrice(model.getCostPrice());
+		product.setCreationDate(model.getCreationDate());
+		product.setDescription(model.getDescription());
+		product.setEnabled(model.getEnabled());
+		product.setFeatures(model.getFeatures());
+		product.setLastOrder(model.getLastOrder());
+		product.setOrders(model.getOrders());
+		product.setRemainingQuantity(model.getRemainingQuantity());
+		product.setSellingPrice(model.getSellingPrice());
 
-		// save the stock
-		stockDAO.saveProduct(stock);
+		// save the product
+		productDAO.saveProduct(product);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 	public void updateProduct(Product theProduct) {
 		// TODO Auto-generated method stub
 
-		stockDAO.updateProduct(theProduct);
+		productDAO.updateProduct(theProduct);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProduct(int theId) {
 		// TODO Auto-generated method stub
 
-		return stockDAO.getProduct(theId);
+		return productDAO.getProduct(theId);
 	}
 
 	@Override
