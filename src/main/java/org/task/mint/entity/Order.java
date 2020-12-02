@@ -19,9 +19,6 @@ import java.util.Set;
 @Table(name = "_order")
 public class Order implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -84,8 +81,7 @@ public class Order implements Serializable {
                 ", customerPhoneNo=" + customerPhoneNo +
                 ", timeOfSale=" + timeOfSale +
                 ", admin=" + admin +
-                ", orderedProducts="
-                + orderedProducts + "]";
+                ", orderedProducts=" + orderedProducts + "]";
     }
 
 }

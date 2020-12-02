@@ -16,9 +16,6 @@ import java.math.BigDecimal;
 		@AssociationOverride(name = "pk.order", joinColumns = @JoinColumn(name = "_order_id")) })
 public class OrderedProduct implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
