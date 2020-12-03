@@ -1,8 +1,11 @@
 package org.task.mint.util;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class OrderedItem {
+public class OrderedItem implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int productId;
 	private int quantity;

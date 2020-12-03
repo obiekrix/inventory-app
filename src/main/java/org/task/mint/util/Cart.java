@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.task.mint.model.Customer;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,9 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class Cart {
+public class Cart implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<OrderedItem> listOfOrderedItems;
     private int processingAdminId;

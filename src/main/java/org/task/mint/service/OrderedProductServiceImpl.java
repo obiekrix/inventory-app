@@ -12,6 +12,7 @@ import org.task.mint.entity.OrderedProduct;
 import org.task.mint.entity.Product;
 import org.task.mint.exception.BadRequestException;
 import org.task.mint.util.Cart;
+import org.task.mint.util.KafkaSender;
 import org.task.mint.util.OrderedItem;
 
 import java.util.Date;
@@ -29,6 +30,9 @@ public class OrderedProductServiceImpl implements OrderedProductService {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private KafkaSender sender;
 
     @Override
     @Transactional
@@ -77,9 +81,11 @@ public class OrderedProductServiceImpl implements OrderedProductService {
             orderedProduct.setSoldPrice(orderedItem.getSoldPrice());
 
             order.getOrderedProducts().add(orderedProduct);
-
-            currentSession.save(order);
         }
+
+        currentSession.save(order);
+
+        sender.sendData(cart);
     }
 
     @Override

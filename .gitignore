@@ -1,0 +1,12 @@
+/target/
+/.idea/
+/data/kafka1/data/__confluent.support.metrics-0/
+/data/kafka1/data/inventory-topic-0/
+/data/zookeeper/data/version-2/
+/data/zookeeper/datalog/version-2/
+/data/kafka1/data/.kafka_cleanshutdown
+/data/kafka1/data/cleaner-offset-checkpoint
+/data/kafka1/data/log-start-offset-checkpoint
+/data/kafka1/data/meta.properties
+/data/kafka1/data/recovery-point-offset-checkpoint
+/data/kafka1/data/replication-offset-checkpoint

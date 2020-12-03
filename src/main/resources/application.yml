@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /inventory/api
-  port: 9091
+  port: 7070
 spring:
   datasource:
     url: 'jdbc:postgresql://localhost:6543/inventory-db'
@@ -18,3 +18,8 @@ hibernate:
   dialect: org.hibernate.dialect.PostgreSQLDialect
   show_sql: true
   packagesToScan: org.task.mint
+kafka:
+  boot:
+    server: localhost:9091
+  topic:
+    name: inventory-topic
