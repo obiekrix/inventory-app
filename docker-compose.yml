@@ -3,7 +3,7 @@ services:
   postgres-db:
     container_name: postgres-db
     image: postgres:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - "6543:5432"
     environment:
