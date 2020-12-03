@@ -52,6 +52,8 @@ public class OrderedProductServiceImpl implements OrderedProductService {
 		
 		order.setTimeOfSale(timeOfOrder);
 		order.setAdmin(currentSession.get(Admin.class, cart.getProcessingAdminId()));
+		order.setCustomerNames(cart.getCustomer().getNames());
+		order.setCustomerPhoneNo(cart.getCustomer().getPhoneNo());
 
 		for (OrderedItem orderedItem : cart.getListOfOrderedItems()) {
 			Product product = currentSession.get(Product.class, orderedItem.getProductId());

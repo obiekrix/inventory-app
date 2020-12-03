@@ -1,42 +1,32 @@
 package org.task.mint.util;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.task.mint.model.Customer;
+
 import java.util.List;
 
 /**
  * @author Christian
- *
  */
-public class Cart{
-	
-	private List<OrderedItem> listOfOrderedItems;
-	private int processingAdminId;
+@Getter
+@AllArgsConstructor
+public class Cart {
 
-	public Cart() {
-		
-	}
-	
-	/**
-	 * @param listOfOrderedItems
-	 * @param processingAdminId
-	 */
-	public Cart(List<OrderedItem> listOfOrderedItems, int processingAdminId) {
-		this.listOfOrderedItems = listOfOrderedItems;
-		this.processingAdminId = processingAdminId;
-	}
+    private List<OrderedItem> listOfOrderedItems;
+    private int processingAdminId;
+    private Customer customer;
 
-	public List<OrderedItem> getListOfOrderedItems() {
-		return listOfOrderedItems;
-	}
+    public Cart() {
 
-	public int getProcessingAdminId() {
-		return processingAdminId;
-	}
+    }
 
-	@Override
-	public String toString() {
-		return "Cart [listOfOrderedItems=" + listOfOrderedItems + ", processingAdminId=" + processingAdminId + "]";
-	}
-	
-	
+    @Override
+    public String toString() {
+        return "Cart [listOfOrderedItems=" + listOfOrderedItems +
+                ", customer=" + customer +
+                ", processingAdminId=" + processingAdminId + "]";
+    }
+
 
 }
