@@ -10,6 +10,7 @@ import org.task.mint.entity.Admin;
 import org.task.mint.entity.Order;
 import org.task.mint.entity.OrderedProduct;
 import org.task.mint.entity.Product;
+import org.task.mint.exception.BadRequestException;
 import org.task.mint.util.Cart;
 import org.task.mint.util.OrderedItem;
 
@@ -19,83 +20,88 @@ import java.util.List;
 
 /**
  * @author Christian
- *
  */
 @Service
 public class OrderedProductServiceImpl implements OrderedProductService {
 
-	@Autowired
-	private OrderedProductDAO orderedProductDAO;
+    @Autowired
+    private OrderedProductDAO orderedProductDAO;
 
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Override
-	@Transactional
-	public List<OrderedProduct> getOrderedProducts() {
-		// TODO Auto-generated method stub
-		return orderedProductDAO.getOrderedProducts();
-	}
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public void saveOrderedProduct(Cart cart) {
-		// TODO Auto-generated method stub
+    @Override
+    @Transactional
+    public List<OrderedProduct> getOrderedProducts() {
+        // TODO Auto-generated method stub
+        return orderedProductDAO.getOrderedProducts();
+    }
 
-		// get the time of this order
-		Date timeOfOrder = new GregorianCalendar().getTime();
+    @Override
+    @Transactional
+    public void saveOrderedProduct(Cart cart) {
+        // TODO Auto-generated method stub
 
-		// get the current hibernate session
-		Session currentSession = sessionFactory.getCurrentSession();
+        // get the time of this order
+        Date timeOfOrder = new GregorianCalendar().getTime();
 
-		Order order = new Order();
-		
-		order.setTimeOfSale(timeOfOrder);
-		order.setAdmin(currentSession.get(Admin.class, cart.getProcessingAdminId()));
-		order.setCustomerNames(cart.getCustomer().getNames());
-		order.setCustomerPhoneNo(cart.getCustomer().getPhoneNo());
+        // get the current hibernate session
+        Session currentSession = sessionFactory.getCurrentSession();
 
-		for (OrderedItem orderedItem : cart.getListOfOrderedItems()) {
-			Product product = currentSession.get(Product.class, orderedItem.getProductId());
-			
-			product.setLastOrder(timeOfOrder);
-			product.setRemainingQuantity(product.getRemainingQuantity() - orderedItem.getQuantity());
-			
-			currentSession.update(product);
+        Order order = new Order();
 
-			OrderedProduct orderedProduct = new OrderedProduct();
-			
-			orderedProduct.getPk().setOrder(order);
-			orderedProduct.getPk().setProduct(product);
-			orderedProduct.setQuantity(orderedItem.getQuantity());
-			orderedProduct.setSoldPrice(orderedItem.getSoldPrice());			
+        order.setTimeOfSale(timeOfOrder);
+        order.setAdmin(currentSession.get(Admin.class, cart.getProcessingAdminId()));
+        order.setCustomerNames(cart.getCustomer().getNames());
+        order.setCustomerPhoneNo(cart.getCustomer().getPhoneNo());
 
-			order.getOrderedProducts().add(orderedProduct);
+        for (OrderedItem orderedItem : cart.getListOfOrderedItems()) {
+            Product product = currentSession.get(Product.class, orderedItem.getProductId());
 
-			currentSession.save(order);
-		}
-	}
+            product.setLastOrder(timeOfOrder);
+            int remainingQuantity = product.getRemainingQuantity() - orderedItem.getQuantity();
 
-	@Override
-	@Transactional
-	public void updateOrderedProduct(OrderedProduct theOrderedProduct) {
-		// TODO Auto-generated method stub
+            if (remainingQuantity <= 0) {
+                throw new BadRequestException("Sorry! There isn't enough " + product.getDescription() + " to fulfill the request. We have just " + product.getRemainingQuantity() + " left in stock");
+            }
 
-		orderedProductDAO.updateOrderedProduct(theOrderedProduct);
-	}
+            product.setRemainingQuantity(remainingQuantity);
 
-	@Override
-	@Transactional
-	public OrderedProduct getOrderedProduct(int theId) {
-		// TODO Auto-generated method stub
+            currentSession.update(product);
 
-		return orderedProductDAO.getOrderedProduct(theId);
-	}
+            OrderedProduct orderedProduct = new OrderedProduct();
 
-	@Override
-	public void deleteOrderedProduct(int theId) {
-		// TODO Auto-generated method stub
+            orderedProduct.getPk().setOrder(order);
+            orderedProduct.getPk().setProduct(product);
+            orderedProduct.setQuantity(orderedItem.getQuantity());
+            orderedProduct.setSoldPrice(orderedItem.getSoldPrice());
 
-	}
+            order.getOrderedProducts().add(orderedProduct);
+
+            currentSession.save(order);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateOrderedProduct(OrderedProduct theOrderedProduct) {
+        // TODO Auto-generated method stub
+
+        orderedProductDAO.updateOrderedProduct(theOrderedProduct);
+    }
+
+    @Override
+    @Transactional
+    public OrderedProduct getOrderedProduct(int theId) {
+        // TODO Auto-generated method stub
+
+        return orderedProductDAO.getOrderedProduct(theId);
+    }
+
+    @Override
+    public void deleteOrderedProduct(int theId) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
